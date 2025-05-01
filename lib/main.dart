@@ -472,7 +472,7 @@ class HomeSection extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'HELLO WORLD',
+                    '',
                     style: TextStyle(
                       fontSize: 18,
                       letterSpacing: 4,
@@ -498,7 +498,7 @@ class HomeSection extends StatelessWidget {
                     ),
                   ),
                   child: NeonText(
-                    'I\'m Alex Chen',
+                    'I\'m Aasim bhat',
                     color: Theme.of(context).colorScheme.secondary,
                     fontSize: 72,
                     fontWeight: FontWeight.bold,
@@ -523,7 +523,7 @@ class HomeSection extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        'Flutter Developer',
+                        'Mobile Application Developer',
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.w300,
@@ -541,7 +541,25 @@ class HomeSection extends StatelessWidget {
                       ),
                       const SizedBox(width: 16),
                       Text(
-                        'UI/UX Designer',
+                        'Flutter',
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.white.withOpacity(0.8),
+                        ),
+                      ),
+                         const SizedBox(width: 16),
+                      Container(
+                        width: 16,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Text(
+                        'React Native',
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.w300,
