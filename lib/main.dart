@@ -1371,19 +1371,19 @@ class _ContactSectionState extends State<ContactSection> {
                       children: [
                         const ContactInfoCard(
                           title: 'Email Address',
-                          info: 'contact@alexchen.dev',
+                          info: 'asimbhat799@gmail.com',
                           icon: Icons.email,
                         ),
-                        const SizedBox(height: 24),
-                        const ContactInfoCard(
-                          title: 'Phone Number',
-                          info: '+1 (555) 123-4567',
-                          icon: Icons.phone,
-                        ),
+                        // const SizedBox(height: 24),
+                        // const ContactInfoCard(
+                        //   title: 'Phone Number',
+                        //   info: '',
+                        //   icon: Icons.phone,
+                        // ),
                         const SizedBox(height: 24),
                         const ContactInfoCard(
                           title: 'Location',
-                          info: 'San Francisco, CA',
+                          info: 'Srinagar, Jammu & Kashmir, India',
                           icon: Icons.location_on,
                         ),
                         const SizedBox(height: 40),
@@ -1400,37 +1400,37 @@ class _ContactSectionState extends State<ContactSection> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Working Hours',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              const _WorkingHoursRow(
-                                day: 'Monday - Friday',
-                                hours: '9:00 AM - 6:00 PM',
-                              ),
-                              const SizedBox(height: 8),
-                              const Divider(
-                                color: Colors.white12,
-                              ),
-                              const SizedBox(height: 8),
-                              const _WorkingHoursRow(
-                                day: 'Saturday',
-                                hours: '10:00 AM - 4:00 PM',
-                              ),
-                              const SizedBox(height: 8),
-                              const Divider(
-                                color: Colors.white12,
-                              ),
-                              const SizedBox(height: 8),
-                              const _WorkingHoursRow(
-                                day: 'Sunday',
-                                hours: 'Closed',
-                              ),
+                              // Text(
+                              //   'Working Hours',
+                              //   style: TextStyle(
+                              //     fontSize: 20,
+                              //     fontWeight: FontWeight.bold,
+                              //     color: Theme.of(context).colorScheme.primary,
+                              //   ),
+                              // ),
+                              // const SizedBox(height: 16),
+                              // const _WorkingHoursRow(
+                              //   day: 'Monday - Friday',
+                              //   hours: '9:00 AM - 6:00 PM',
+                              // ),
+                              // const SizedBox(height: 8),
+                              // const Divider(
+                              //   color: Colors.white12,
+                              // ),
+                              // const SizedBox(height: 8),
+                              // const _WorkingHoursRow(
+                              //   day: 'Saturday',
+                              //   hours: '10:00 AM - 4:00 PM',
+                              // ),
+                              // const SizedBox(height: 8),
+                              // const Divider(
+                              //   color: Colors.white12,
+                              // ),
+                              // const SizedBox(height: 8),
+                              // const _WorkingHoursRow(
+                              //   day: 'Sunday',
+                              //   hours: 'Closed',
+                              // ),
                             ],
                           ),
                         ),
