@@ -123,7 +123,7 @@ class _PortfolioHomeState extends State<PortfolioHome> with SingleTickerProvider
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       NeonText(
-                        'DEV<MAX>', 
+                        '', 
                         color: Theme.of(context).colorScheme.primary, 
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -1447,41 +1447,7 @@ class _ContactSectionState extends State<ContactSection> {
   }
 }
 
-class _WorkingHoursRow extends StatelessWidget {
-  final String day;
-  final String hours;
 
-  const _WorkingHoursRow({
-    required this.day,
-    required this.hours,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          day,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.white.withOpacity(0.8),
-          ),
-        ),
-        Text(
-          hours,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: hours == 'Closed'
-                ? Theme.of(context).colorScheme.secondary
-                : Colors.white,
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 class ContactInfoCard extends StatefulWidget {
   final String title;
