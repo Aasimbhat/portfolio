@@ -1,370 +1,208 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/neon_text.dart';
+import '../widgets/project_card.dart';
 
 class ProjectsSection extends StatefulWidget {
-  const ProjectsSection({super.key});
+  final AnimationController animationController;
+  final Size screenSize;
+
+  const ProjectsSection({
+    super.key,
+    required this.animationController,
+    required this.screenSize,
+  });
 
   @override
   State<ProjectsSection> createState() => _ProjectsSectionState();
 }
 
-class _ProjectsSectionState extends State<ProjectsSection>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  final List<String> _categories = [
-    'All',
-    'Mobile Apps',
-    'Web',
-    'UI/UX',
-    'Experiments',
-  ];
+class _ProjectsSectionState extends State<ProjectsSection> {
+  late final ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _categories.length, vsync: this);
+    _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final projectsList = [
-      {
-        'title': 'Neon Finance',
-        'description':
-            'A futuristic finance tracking app with AI predictions and visualization',
-        'category': 'Mobile Apps',
-        'color': const Color(0xFF00E5FF),
-        'image':
-            'https://images.unsplash.com/photo-1579621970590-9d624316904b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      },
-      {
-        'title': 'Echo Social',
-        'description':
-            'Next-gen social platform with AR integrations and immersive content',
-        'category': 'Mobile Apps',
-        'color': const Color(0xFFFE53BB),
-        'image':
-            'https://images.unsplash.com/photo-1573152958734-1922c188fba3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      },
-      {
-        'title': 'Pulse Ecommerce',
-        'description':
-            'Interactive shopping experience with virtual try-on technology',
-        'category': 'Web',
-        'color': const Color(0xFFF2A900),
-        'image':
-            'https://images.unsplash.com/photo-1559830772-73d5e48d1c52?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      },
-      {
-        'title': 'Neural Canvas',
-        'description':
-            'AI-powered design tool for generating dynamic visual content',
-        'category': 'Experiments',
-        'color': const Color(0xFF7B61FF),
-        'image':
-            'https://images.unsplash.com/photo-1617791160588-241658c0f566?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      },
-      {
-        'title': 'Hyper Health',
-        'description':
-            'Health tracking app with gamification and social challenges',
-        'category': 'UI/UX',
-        'color': const Color(0xFF1ED760),
-        'image':
-            'https://images.unsplash.com/photo-1576086213369-97a306d36557?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      },
-      {
-        'title': 'Quantum Weather',
-        'description':
-            'Weather visualization with immersive 3D particle simulations',
-        'category': 'Experiments',
-        'color': const Color(0xFFFF7262),
-        'image':
-            'https://images.unsplash.com/photo-1561484930-998b6a7b22e8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      },
-    ];
+    final isMobile = widget.screenSize.width < 600;
+    final isTablet =
+        widget.screenSize.width >= 600 && widget.screenSize.width < 900;
 
-    return Container(
-      padding: const EdgeInsets.only(top: 100, bottom: 40),
+    return Padding(
+      padding: EdgeInsets.only(
+        top: isMobile ? 80 : 40,
+        left: isMobile ? 16 : 40,
+        right: isMobile ? 16 : 40,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: NeonText(
-              'Recent Projects',
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: 42,
-              fontWeight: FontWeight.bold,
+          SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, -0.2),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: widget.animationController,
+                curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
+              ),
+            ),
+            child: FadeTransition(
+              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                  parent: widget.animationController,
+                  curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
+                ),
+              ),
+              child: Text(
+                "MY PROJECTS",
+                style: TextStyle(
+                  fontSize: isMobile ? 14 : 18,
+                  letterSpacing: 4,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, -0.1),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: widget.animationController,
+                curve: const Interval(0.1, 0.6, curve: Curves.easeOut),
+              ),
+            ),
+            child: FadeTransition(
+              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                  parent: widget.animationController,
+                  curve: const Interval(0.1, 0.6, curve: Curves.easeOut),
+                ),
+              ),
+              child: Text(
+                "Recent Work",
+                style: TextStyle(
+                  fontSize: isMobile ? 36 : 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 40),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorColor: Theme.of(context).colorScheme.primary,
-              dividerColor: Colors.transparent,
-              tabs:
-                  _categories.map((category) {
-                    return Tab(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.2),
-                          ),
-                        ),
-                        child: Text(category),
-                      ),
-                    );
-                  }).toList(),
-            ),
-          ),
-          const SizedBox(height: 32),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children:
-                  _categories.map((category) {
-                    final filteredProjects =
-                        category == 'All'
-                            ? projectsList
-                            : projectsList
-                                .where(
-                                  (project) => project['category'] == category,
-                                )
-                                .toList();
-
-                    return GridView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 1.2,
-                            crossAxisSpacing: 24,
-                            mainAxisSpacing: 24,
-                          ),
-                      itemCount: filteredProjects.length,
-                      itemBuilder: (context, index) {
-                        final project = filteredProjects[index];
-                        return ProjectCard(
-                          title: project['title'] as String,
-                          description: project['description'] as String,
-                          color: project['color'] as Color,
-                          imageUrl: project['image'] as String,
-                        );
-                      },
-                    );
-                  }).toList(),
-            ),
+            child:
+                isMobile
+                    ? ListView(children: _buildProjectCards(isMobile: true))
+                    : GridView.count(
+                      crossAxisCount: isTablet ? 2 : 3,
+                      childAspectRatio: isTablet ? 1.2 : 1.5,
+                      mainAxisSpacing: 24,
+                      crossAxisSpacing: 24,
+                      children: _buildProjectCards(isMobile: false),
+                    ),
           ),
         ],
       ),
     );
   }
-}
 
-class ProjectCard extends StatefulWidget {
-  final String title;
-  final String description;
-  final Color color;
-  final String imageUrl;
-
-  const ProjectCard({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.color,
-    required this.imageUrl,
-  });
-
-  @override
-  State<ProjectCard> createState() => _ProjectCardState();
-}
-
-class _ProjectCardState extends State<ProjectCard>
-    with SingleTickerProviderStateMixin {
-  bool _isHovered = false;
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.05,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) {
-        setState(() => _isHovered = true);
-        _controller.forward();
+  List<Widget> _buildProjectCards({required bool isMobile}) {
+    final projects = [
+      {
+        'title': 'Portfolio Website',
+        'description': 'A responsive portfolio website built with Flutter',
+        'technologies': ['Flutter', 'Dart', 'Web'],
+        'image': 'assets/images/portfolio.png',
       },
-      onExit: (_) {
-        setState(() => _isHovered = false);
-        _controller.reverse();
+      {
+        'title': 'Task Management App',
+        'description':
+            'A task management app with clean UI and smooth animations',
+        'technologies': ['Flutter', 'Firebase', 'BLoC'],
+        'image': 'assets/images/task_app.png',
       },
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: widget.color.withOpacity(_isHovered ? 0.3 : 0.1),
-                blurRadius: 20,
-                spreadRadius: -10,
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: Image.network(widget.imageUrl, fit: BoxFit.cover),
-                ),
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.7),
-                          Colors.black.withOpacity(0.9),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.title,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            shadows: [
-                              Shadow(color: widget.color, blurRadius: 8),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          widget.description,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: widget.color.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: widget.color.withOpacity(0.5),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.remove_red_eye,
-                                    color: widget.color,
-                                    size: 14,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    'View',
-                                    style: TextStyle(
-                                      color: widget.color,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: widget.color,
-                              size: 18,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                if (_isHovered)
-                  Positioned(
-                    top: 12,
-                    right: 12,
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.favorite,
-                        color: widget.color,
-                        size: 18,
-                      ),
-                    ),
-                  ),
-              ],
+      {
+        'title': 'E-commerce App',
+        'description':
+            'A modern e-commerce application with cart and payment features',
+        'technologies': ['React Native', 'Redux', 'Node.js'],
+        'image': 'assets/images/ecommerce_app.png',
+      },
+      {
+        'title': 'Weather App',
+        'description': 'A beautiful weather application with forecast features',
+        'technologies': ['Flutter', 'API Integration', 'Animations'],
+        'image': 'assets/images/weather_app.png',
+      },
+      {
+        'title': 'Chat Application',
+        'description': 'Real-time messaging app with multimedia support',
+        'technologies': ['Flutter', 'Firebase', 'GetX'],
+        'image': 'assets/images/chat_app.png',
+      },
+      {
+        'title': 'Fitness Tracker',
+        'description':
+            'Track workouts, nutrition, and progress with detailed analytics',
+        'technologies': ['React Native', 'Redux', 'HealthKit/GoogleFit'],
+        'image': 'assets/images/fitness_app.png',
+      },
+    ];
+
+    final cards = <Widget>[];
+    for (int i = 0; i < projects.length; i++) {
+      final project = projects[i];
+      final card = SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, 0.2),
+          end: Offset.zero,
+        ).animate(
+          CurvedAnimation(
+            parent: widget.animationController,
+            curve: Interval(
+              0.2 + (i * 0.05),
+              0.7 + (i * 0.05),
+              curve: Curves.easeOut,
             ),
           ),
         ),
-      ),
-    );
+        child: FadeTransition(
+          opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+            CurvedAnimation(
+              parent: widget.animationController,
+              curve: Interval(
+                0.2 + (i * 0.05),
+                0.7 + (i * 0.05),
+                curve: Curves.easeOut,
+              ),
+            ),
+          ),
+          child: ProjectCard(
+            title: project['title']! as String,
+            description: project['description']! as String,
+            technologies: project['technologies'] as List<String>,
+            imagePath: project['image']! as String,
+            onTap: () {},
+            isMobile: isMobile,
+          ),
+        ),
+      );
+      cards.add(card);
+    }
+
+    return cards;
   }
 }

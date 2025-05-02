@@ -1,266 +1,529 @@
 import 'package:flutter/material.dart';
 
+import '../utils/painters.dart';
 import '../widgets/buttons.dart';
-import '../widgets/form_widgets.dart';
-import '../widgets/neon_text.dart';
 
 class ContactSection extends StatefulWidget {
-  const ContactSection({super.key});
+  final AnimationController animationController;
+  final Size screenSize;
+
+  const ContactSection({
+    super.key,
+    required this.animationController,
+    required this.screenSize,
+  });
 
   @override
   State<ContactSection> createState() => _ContactSectionState();
 }
 
 class _ContactSectionState extends State<ContactSection> {
-  final Map<String, TextEditingController> _controllers = {
-    'name': TextEditingController(),
-    'email': TextEditingController(),
-    'subject': TextEditingController(),
-    'message': TextEditingController(),
-  };
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _messageController = TextEditingController();
 
   @override
   void dispose() {
-    _controllers.forEach((_, controller) => controller.dispose());
+    _nameController.dispose();
+    _emailController.dispose();
+    _messageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top: 100, bottom: 40),
+    final isMobile = widget.screenSize.width < 600;
+    final isTablet =
+        widget.screenSize.width >= 600 && widget.screenSize.width < 900;
+
+    return Padding(
+      padding: EdgeInsets.only(
+        top: isMobile ? 80 : 40,
+        left: isMobile ? 16 : 40,
+        right: isMobile ? 16 : 40,
+        bottom: 40,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: NeonText(
-              'Get In Touch',
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: 42,
-              fontWeight: FontWeight.bold,
+          SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, -0.2),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: widget.animationController,
+                curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Text(
-              'Let\'s create something amazing together',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white.withOpacity(0.7),
+            child: FadeTransition(
+              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                  parent: widget.animationController,
+                  curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
+                ),
+              ),
+              child: Text(
+                "CONTACT ME",
+                style: TextStyle(
+                  fontSize: isMobile ? 14 : 18,
+                  letterSpacing: 4,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
           ),
-          const SizedBox(height: 60),
+          const SizedBox(height: 8),
+          SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, -0.1),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: widget.animationController,
+                curve: const Interval(0.1, 0.6, curve: Curves.easeOut),
+              ),
+            ),
+            child: FadeTransition(
+              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                  parent: widget.animationController,
+                  curve: const Interval(0.1, 0.6, curve: Curves.easeOut),
+                ),
+              ),
+              child: Text(
+                "Get In Touch",
+                style: TextStyle(
+                  fontSize: isMobile ? 36 : 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: isMobile ? 32 : 48),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            child:
+                isMobile
+                    ? _buildMobileLayout(context)
+                    : _buildDesktopLayout(context, isTablet),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMobileLayout(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildContactInfo(context),
+          const SizedBox(height: 40),
+          _buildContactForm(context, fullWidth: true),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDesktopLayout(BuildContext context, bool isTablet) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(flex: isTablet ? 5 : 4, child: _buildContactInfo(context)),
+        SizedBox(width: isTablet ? 32 : 48),
+        Expanded(
+          flex: isTablet ? 7 : 6,
+          child: _buildContactForm(context, fullWidth: false),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContactInfo(BuildContext context) {
+    final isMobile = widget.screenSize.width < 600;
+
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(-0.2, 0),
+        end: Offset.zero,
+      ).animate(
+        CurvedAnimation(
+          parent: widget.animationController,
+          curve: const Interval(0.2, 0.7, curve: Curves.easeOut),
+        ),
+      ),
+      child: FadeTransition(
+        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+          CurvedAnimation(
+            parent: widget.animationController,
+            curve: const Interval(0.2, 0.7, curve: Curves.easeOut),
+          ),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
                 children: [
-                  Expanded(
-                    flex: 2,
-                    child: ContactForm(controllers: _controllers),
+                  Container(
+                    width: isMobile ? 48 : 60,
+                    height: isMobile ? 48 : 60,
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Icon(
+                      Icons.location_on,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: isMobile ? 24 : 30,
+                    ),
                   ),
-                  const SizedBox(width: 60),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        ContactInfoCard(
-                          title: 'Email Address',
-                          info: 'asimbhat799@gmail.com',
-                          icon: Icons.email,
-                        ),
-                        SizedBox(height: 24),
-                        ContactInfoCard(
-                          title: 'Location',
-                          info: 'Srinagar, Jammu & Kashmir, India',
-                          icon: Icons.location_on,
-                        ),
-                        SizedBox(height: 40),
-                      ],
+                  Positioned(
+                    right: -5,
+                    top: -5,
+                    child: Container(
+                      width: 14,
+                      height: 14,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ContactForm extends StatelessWidget {
-  final Map<String, TextEditingController> controllers;
-
-  const ContactForm({super.key, required this.controllers});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.black.withOpacity(0.3),
-        border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-            blurRadius: 20,
-            spreadRadius: -10,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: GlowingTextField(
-                  controller: controllers['name']!,
-                  label: 'Name',
-                  icon: Icons.person,
+              const SizedBox(height: 20),
+              Text(
+                "Location",
+                style: TextStyle(
+                  fontSize: isMobile ? 18 : 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: GlowingTextField(
-                  controller: controllers['email']!,
-                  label: 'Email',
-                  icon: Icons.email,
+              const SizedBox(height: 8),
+              Text(
+                "Srinagar, J&K - India",
+                style: TextStyle(
+                  fontSize: isMobile ? 14 : 16,
+                  color: Colors.white.withOpacity(0.7),
+                ),
+              ),
+              SizedBox(height: isMobile ? 36 : 48),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    width: isMobile ? 48 : 60,
+                    height: isMobile ? 48 : 60,
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Icon(
+                      Icons.mail,
+                      color: Theme.of(context).colorScheme.secondary,
+                      size: isMobile ? 24 : 30,
+                    ),
+                  ),
+                  Positioned(
+                    right: -5,
+                    top: -5,
+                    child: Container(
+                      width: 14,
+                      height: 14,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondary,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text(
+                "Email",
+                style: TextStyle(
+                  fontSize: isMobile ? 18 : 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "aasim@example.com",
+                style: TextStyle(
+                  fontSize: isMobile ? 14 : 16,
+                  color: Colors.white.withOpacity(0.7),
+                ),
+              ),
+              SizedBox(height: isMobile ? 36 : 48),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    width: isMobile ? 48 : 60,
+                    height: isMobile ? 48 : 60,
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.tertiary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Icon(
+                      Icons.phone,
+                      color: Theme.of(context).colorScheme.tertiary,
+                      size: isMobile ? 24 : 30,
+                    ),
+                  ),
+                  Positioned(
+                    right: -5,
+                    top: -5,
+                    child: Container(
+                      width: 14,
+                      height: 14,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text(
+                "Phone",
+                style: TextStyle(
+                  fontSize: isMobile ? 18 : 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "+91 1234567890",
+                style: TextStyle(
+                  fontSize: isMobile ? 14 : 16,
+                  color: Colors.white.withOpacity(0.7),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 24),
-          GlowingTextField(
-            controller: controllers['subject']!,
-            label: 'Subject',
-            icon: Icons.text_fields,
-          ),
-          const SizedBox(height: 24),
-          GlowingTextField(
-            controller: controllers['message']!,
-            label: 'Message',
-            icon: Icons.message,
-            maxLines: 5,
-          ),
-          const SizedBox(height: 32),
-          Center(
-            child: GlowingButton(
-              text: 'Send Message',
-              color: Theme.of(context).colorScheme.primary,
-              onPressed: () {},
-              width: 200,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
-}
 
-class ContactInfoCard extends StatefulWidget {
-  final String title;
-  final String info;
-  final IconData icon;
+  Widget _buildContactForm(BuildContext context, {required bool fullWidth}) {
+    final isMobile = widget.screenSize.width < 600;
 
-  const ContactInfoCard({
-    super.key,
-    required this.title,
-    required this.info,
-    required this.icon,
-  });
-
-  @override
-  State<ContactInfoCard> createState() => _ContactInfoCardState();
-}
-
-class _ContactInfoCardState extends State<ContactInfoCard> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color:
-              _isHovered
-                  ? Theme.of(context).colorScheme.primary.withOpacity(0.15)
-                  : Colors.black.withOpacity(0.3),
-          border: Border.all(
-            color:
-                _isHovered
-                    ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
-                    : Colors.white.withOpacity(0.1),
-            width: 1,
-          ),
-          boxShadow:
-              _isHovered
-                  ? [
-                    BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withOpacity(0.2),
-                      blurRadius: 15,
-                      spreadRadius: -5,
-                    ),
-                  ]
-                  : [],
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(0.2, 0),
+        end: Offset.zero,
+      ).animate(
+        CurvedAnimation(
+          parent: widget.animationController,
+          curve: const Interval(0.3, 0.8, curve: Curves.easeOut),
         ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color:
-                    _isHovered
-                        ? Theme.of(context).colorScheme.primary.withOpacity(0.2)
-                        : Colors.black.withOpacity(0.4),
+      ),
+      child: FadeTransition(
+        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+          CurvedAnimation(
+            parent: widget.animationController,
+            curve: const Interval(0.3, 0.8, curve: Curves.easeOut),
+          ),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                blurRadius: 30,
+                spreadRadius: -10,
               ),
-              child: Icon(
-                widget.icon,
-                color:
-                    _isHovered
-                        ? Theme.of(context).colorScheme.primary
-                        : Colors.white,
-                size: 24,
+            ],
+          ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Send me a message",
+                      style: TextStyle(
+                        fontSize: isMobile ? 18 : 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Have a project in mind or want to collaborate? Feel free to reach out!",
+                      style: TextStyle(
+                        fontSize: isMobile ? 14 : 16,
+                        color: Colors.white.withOpacity(0.7),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    _buildInputField(
+                      controller: _nameController,
+                      label: "Your Name",
+                      prefixIcon: Icons.person_outline,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    _buildInputField(
+                      controller: _emailController,
+                      label: "Your Email",
+                      prefixIcon: Icons.email_outlined,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        if (!value.contains('@') || !value.contains('.')) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    _buildInputField(
+                      controller: _messageController,
+                      label: "Your Message",
+                      prefixIcon: Icons.message_outlined,
+                      maxLines: 5,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a message';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 32),
+                    GlowingButton(
+                      text: "Send Message",
+                      color: Theme.of(context).colorScheme.primary,
+                      width: fullWidth ? double.infinity : 200,
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          // Submit form logic here
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Sending message...'),
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white.withOpacity(0.6),
+              Positioned(
+                top: -15,
+                right: -15,
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.send, color: Colors.black, size: 16),
+                ),
+              ),
+              if (!isMobile)
+                Positioned(
+                  bottom: -50,
+                  right: -50,
+                  child: Container(
+                    width: 180,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        colors: [
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withOpacity(0.1),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                    child: CustomPaint(
+                      painter: CircuitPainter(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withOpacity(0.3),
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  widget.info,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String label,
+    required IconData prefixIcon,
+    int maxLines = 1,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      maxLines: maxLines,
+      validator: validator,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+        prefixIcon: Icon(prefixIcon, color: Colors.white.withOpacity(0.7)),
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.05),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.redAccent),
         ),
       ),
     );
