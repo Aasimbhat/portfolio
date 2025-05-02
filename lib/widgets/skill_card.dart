@@ -99,86 +99,97 @@ class _SkillCardState extends State<SkillCard>
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const SizedBox(height: 24),
-            Expanded(
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: widget.skills.length,
-                itemBuilder: (context, index) {
-                  final skill = widget.skills[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: AnimatedBuilder(
-                      animation: _progressAnimations[index],
-                      builder: (context, child) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  skill['name'] as String,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  '${(_progressAnimations[index].value * 100).toInt()}%',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Stack(
-                              children: [
-                                Container(
-                                  height: 6,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white.withOpacity(0.1),
-                                  ),
-                                ),
-                                Container(
-                                  height: 6,
-                                  width:
-                                      MediaQuery.of(context).size.width *
-                                      _progressAnimations[index].value *
-                                      (widget.isMobile ? 0.7 : 0.25),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.primary.withOpacity(0.5),
-                                        blurRadius: 6,
-                                        spreadRadius: -3,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
+            const SizedBox(height: 16),
+            widget.isMobile
+                ? _buildMobileSkillsList()
+                : Expanded(child: _buildSkillsList()),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildMobileSkillsList() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(
+        widget.skills.length,
+        (index) => _buildSkillItem(index),
+      ),
+    );
+  }
+
+  Widget _buildSkillsList() {
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: widget.skills.length,
+      itemBuilder: (context, index) => _buildSkillItem(index),
+    );
+  }
+
+  Widget _buildSkillItem(int index) {
+    final skill = widget.skills[index];
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: AnimatedBuilder(
+        animation: _progressAnimations[index],
+        builder: (context, child) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    skill['name'] as String,
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                  Text(
+                    '${(_progressAnimations[index].value * 100).toInt()}%',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Stack(
+                children: [
+                  Container(
+                    height: 6,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white.withOpacity(0.1),
+                    ),
+                  ),
+                  Container(
+                    height: 6,
+                    width:
+                        MediaQuery.of(context).size.width *
+                        _progressAnimations[index].value *
+                        (widget.isMobile ? 0.6 : 0.25),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Theme.of(context).colorScheme.primary,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withOpacity(0.5),
+                          blurRadius: 6,
+                          spreadRadius: -3,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

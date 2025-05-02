@@ -89,11 +89,24 @@ class _ProjectCardState extends State<ProjectCard>
                       color: Theme.of(
                         context,
                       ).colorScheme.primary.withOpacity(0.1),
-                      child: const Center(
-                        child: Icon(
-                          Icons.image_not_supported,
-                          color: Colors.white54,
-                          size: 40,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.image_not_supported,
+                              color: Colors.white54,
+                              size: 40,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              widget.title,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -222,11 +235,25 @@ class _ProjectCardState extends State<ProjectCard>
                               color: Theme.of(
                                 context,
                               ).colorScheme.primary.withOpacity(0.1),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.image_not_supported,
-                                  color: Colors.white54,
-                                  size: 40,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.image_not_supported,
+                                      color: Colors.white54,
+                                      size: 40,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      widget.title,
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
                               ),
                             );

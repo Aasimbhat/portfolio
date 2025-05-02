@@ -22,6 +22,7 @@ class SkillsSection extends StatelessWidget {
         top: isMobile ? 80 : 40,
         left: isMobile ? 16 : 40,
         right: isMobile ? 16 : 40,
+        bottom: isMobile ? 16 : 40,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,19 +82,108 @@ class SkillsSection extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 40),
-          Expanded(child: _buildSkillsLayout(context, isMobile, isTablet)),
+          const SizedBox(height: 32),
+          // Use a different approach for mobile layout
+          isMobile
+              ? Expanded(child: _buildMobileSkillsLayout(context))
+              : Expanded(child: _buildDesktopSkillsLayout(context, isTablet)),
         ],
       ),
     );
   }
 
-  Widget _buildSkillsLayout(
-    BuildContext context,
-    bool isMobile,
-    bool isTablet,
-  ) {
-    final skillsData = [
+  Widget _buildMobileSkillsLayout(BuildContext context) {
+    final skillsData = _getSkillsData();
+
+    return ListView.builder(
+      itemCount: skillsData.length,
+      itemBuilder: (context, index) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 0.2),
+            end: Offset.zero,
+          ).animate(
+            CurvedAnimation(
+              parent: animationController,
+              curve: Interval(
+                0.2 + (index * 0.1),
+                0.7 + (index * 0.1),
+                curve: Curves.easeOut,
+              ),
+            ),
+          ),
+          child: FadeTransition(
+            opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+              CurvedAnimation(
+                parent: animationController,
+                curve: Interval(
+                  0.2 + (index * 0.1),
+                  0.7 + (index * 0.1),
+                  curve: Curves.easeOut,
+                ),
+              ),
+            ),
+            child: SkillCard(
+              category: skillsData[index]['category'] as String,
+              skills: skillsData[index]['skills'] as List<Map<String, dynamic>>,
+              isMobile: true,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDesktopSkillsLayout(BuildContext context, bool isTablet) {
+    final skillsData = _getSkillsData();
+
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: isTablet ? 2 : 3,
+        childAspectRatio: isTablet ? 1.3 : 1.1,
+        crossAxisSpacing: 24,
+        mainAxisSpacing: 24,
+      ),
+      itemCount: skillsData.length,
+      itemBuilder: (context, index) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 0.2),
+            end: Offset.zero,
+          ).animate(
+            CurvedAnimation(
+              parent: animationController,
+              curve: Interval(
+                0.2 + (index * 0.1),
+                0.7 + (index * 0.1),
+                curve: Curves.easeOut,
+              ),
+            ),
+          ),
+          child: FadeTransition(
+            opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+              CurvedAnimation(
+                parent: animationController,
+                curve: Interval(
+                  0.2 + (index * 0.1),
+                  0.7 + (index * 0.1),
+                  curve: Curves.easeOut,
+                ),
+              ),
+            ),
+            child: SkillCard(
+              category: skillsData[index]['category'] as String,
+              skills: skillsData[index]['skills'] as List<Map<String, dynamic>>,
+              isMobile: false,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  List<Map<String, dynamic>> _getSkillsData() {
+    return [
       {
         'category': 'Mobile Development',
         'skills': [
@@ -122,139 +212,5 @@ class SkillsSection extends StatelessWidget {
         ],
       },
     ];
-
-    if (isMobile) {
-      // Mobile layout (single column)
-      return ListView.builder(
-        itemCount: skillsData.length,
-        itemBuilder: (context, index) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 0.2),
-              end: Offset.zero,
-            ).animate(
-              CurvedAnimation(
-                parent: animationController,
-                curve: Interval(
-                  0.2 + (index * 0.1),
-                  0.7 + (index * 0.1),
-                  curve: Curves.easeOut,
-                ),
-              ),
-            ),
-            child: FadeTransition(
-              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                CurvedAnimation(
-                  parent: animationController,
-                  curve: Interval(
-                    0.2 + (index * 0.1),
-                    0.7 + (index * 0.1),
-                    curve: Curves.easeOut,
-                  ),
-                ),
-              ),
-              child: SkillCard(
-                category: skillsData[index]['category'] as String,
-                skills:
-                    skillsData[index]['skills'] as List<Map<String, dynamic>>,
-                isMobile: true,
-              ),
-            ),
-          );
-        },
-      );
-    } else if (isTablet) {
-      // Tablet layout (2 columns)
-      return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.3,
-          crossAxisSpacing: 24,
-          mainAxisSpacing: 24,
-        ),
-        itemCount: skillsData.length,
-        itemBuilder: (context, index) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 0.2),
-              end: Offset.zero,
-            ).animate(
-              CurvedAnimation(
-                parent: animationController,
-                curve: Interval(
-                  0.2 + (index * 0.1),
-                  0.7 + (index * 0.1),
-                  curve: Curves.easeOut,
-                ),
-              ),
-            ),
-            child: FadeTransition(
-              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                CurvedAnimation(
-                  parent: animationController,
-                  curve: Interval(
-                    0.2 + (index * 0.1),
-                    0.7 + (index * 0.1),
-                    curve: Curves.easeOut,
-                  ),
-                ),
-              ),
-              child: SkillCard(
-                category: skillsData[index]['category'] as String,
-                skills:
-                    skillsData[index]['skills'] as List<Map<String, dynamic>>,
-                isMobile: false,
-              ),
-            ),
-          );
-        },
-      );
-    } else {
-      // Desktop layout (3 columns)
-      return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 1.1,
-          crossAxisSpacing: 24,
-          mainAxisSpacing: 24,
-        ),
-        itemCount: skillsData.length,
-        itemBuilder: (context, index) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 0.2),
-              end: Offset.zero,
-            ).animate(
-              CurvedAnimation(
-                parent: animationController,
-                curve: Interval(
-                  0.2 + (index * 0.1),
-                  0.7 + (index * 0.1),
-                  curve: Curves.easeOut,
-                ),
-              ),
-            ),
-            child: FadeTransition(
-              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                CurvedAnimation(
-                  parent: animationController,
-                  curve: Interval(
-                    0.2 + (index * 0.1),
-                    0.7 + (index * 0.1),
-                    curve: Curves.easeOut,
-                  ),
-                ),
-              ),
-              child: SkillCard(
-                category: skillsData[index]['category'] as String,
-                skills:
-                    skillsData[index]['skills'] as List<Map<String, dynamic>>,
-                isMobile: false,
-              ),
-            ),
-          );
-        },
-      );
-    }
   }
 }
