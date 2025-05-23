@@ -218,30 +218,6 @@ class _PortfolioHomeState extends State<PortfolioHome>
                     ),
               ),
               const SizedBox(width: 20),
-              OutlinedButton(
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 14,
-                  ),
-                  side: BorderSide(color: Colors.white.withOpacity(0.3)),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      'Resume',
-                      style: TextStyle(color: Colors.white.withOpacity(0.9)),
-                    ),
-                    const SizedBox(width: 8),
-                    const Icon(Icons.download, size: 16),
-                  ],
-                ),
-              ),
             ],
           ),
         ],
